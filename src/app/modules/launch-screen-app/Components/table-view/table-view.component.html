@@ -1,0 +1,376 @@
+<div class="w-full">
+  <div class="p-2">
+    <!--desctiption-->
+    <div class="flex gap-2 items-center xs:justify-between">
+      <!--Text-->
+      <div>
+        <!--First line-->
+        <div>
+          <label class="secondary-heading"
+            >WOW Resource ID:
+            <span class="primary-heading ml-[21px]">{{
+              wow_assesment_idd
+            }}</span>
+          </label>
+        </div>
+        <!--second line-->
+
+        <div>
+          <label class="secondary-heading"
+            >WOW Resource Name:
+            <span class="red-heading">{{ wow_assesment_name }}</span>
+          </label>
+        </div>
+      </div>
+    </div>
+    <!--Input type-->
+    <form [formGroup]="firstFormGroup" class="w-full flex justify-center">
+      <mat-form-field
+        appearance="outline"
+        class="w-full xs:w-full component--mat-form-field__custom-input component--mat-country_input__custom-style normal-text-heading gt-sm:w-[40%]"
+      >
+        <input
+          matInput
+          placeholder="Type Here...."
+          formControlName="firstCtrl"
+          id="name"
+          [(ngModel)]="inputValue"
+          (ngModelChange)="type($event)"
+          (keyup.enter)="addyourglobalcomments()"
+        />
+      </mat-form-field>
+    </form>
+    <!--Button-->
+    <div class="py-1 flex flex-wrap justify-start gap-2">
+      <div class="">
+        <button
+          class="primary-button"
+          mat-raised-button
+          (click)="addyourglobalcomments()"
+          [disabled]="disableglobal"
+        >
+          Add Your Global Comment
+        </button>
+      </div>
+
+      <div class="xs:ml-0 xs:mt-[0px]">
+        <button
+          *ngIf="ispulic === 0"
+          type="submit"
+          class="primary-button"
+          mat-raised-button
+          [disabled]="isButtonDisabled"
+          (click)="makeglobal(); disableButton()"
+        >
+          Make Global
+        </button>
+        <button
+          *ngIf="ispulic === 1"
+          type="submit"
+          class="primary-button"
+          mat-raised-button
+          [disabled]="isButtonDisabled"
+          (click)="makeprivate(); disableButton()"
+        >
+          Make Private
+        </button>
+      </div>
+    </div>
+
+    <!--Single line-->
+    <div class="mb-2">
+      <span class="normal-heading"
+        >By default all new comments from users shall be private unless you make
+        it public.</span
+      >
+    </div>
+
+    <!--Table-->
+    <div class="mat-elevation-z8 example-container w-full">
+      <div id="pdfTable">
+        <table
+          *ngIf="dataSource"
+          id="excel_table"
+          mat-table
+          [dataSource]="dataSource"
+          class="component--mat-table__custom-table checklist-table table-bordered table-sm block"
+        >
+          <ng-container matColumnDef="col">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              style="
+                width: 130px;
+                max-width: 250px;
+                word-wrap: break-word;
+                white-space: nowrap;
+                padding-left: 8px;
+                padding-right: 8px;
+                vertical-align: middle;
+                text-align: center;
+                border-right: 1px solid #9a9a9a;
+              "
+            >
+              Status
+            </th>
+            <td
+              mat-cell
+              *matCellDef="let element"
+              style="text-align: left; padding-left: 10px"
+            >
+              <div class="w-full flex items-center mr-2">
+                <div>
+                  <mat-radio-button
+                    class=""
+                    (click)="select(element)"
+                  ></mat-radio-button>
+                </div>
+                <div>
+                  <ng-container *ngIf="element.is_public == 0">
+                    <span class="normal-heading"
+                      >Private <br />
+                      Comment
+                    </span></ng-container
+                  >
+                  <ng-container *ngIf="element.is_public == 1"
+                    ><span class="normal-heading"
+                      >Public <br />
+                      Comment</span
+                    >
+                  </ng-container>
+                </div>
+              </div>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="col1">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              style="
+                width: 550px;
+                max-width: 600px;
+                word-wrap: break-word;
+                padding-left: 8px;
+                padding-right: 8px;
+                vertical-align: middle;
+                text-align: center;
+              "
+            >
+              Comment/Suggestion from Users:
+            </th>
+            <td mat-cell *matCellDef="let element; let row">
+              <!--OverAll-->
+              <div class="mr-1">
+                <!--First Person Messgage-->
+                <div class="w-full flex gap-2 mt-2 ml-2">
+                  <!--content-->
+                  <div class="w-[414px] space-y-1 mt-[3px]">
+                    <div class="text-left">
+                      <span
+                        a
+                        routerLink="/example"
+                        style="text-decoration: underline"
+                        class="primary-heading whitespace-nowrap"
+                        (click)="isrowsel(row)"
+                        (click)="openUserProfile1()"
+                      >
+                        {{ element.comment_from_user_name }}
+                      </span>
+                      <span class="secondary-heading mt-[7px]"> - </span>
+                      <span class="secondary-heading whitespace-nowrap">
+                        {{ element.comment_from_user_category_name }}</span
+                      >
+                    </div>
+                    <div class="text-justify">
+                      <span class="normal-heading">{{
+                        element.comment_text
+                      }}</span>
+                    </div>
+
+                    <div *ngIf="element.category_aut == null" class="w-[99%]">
+                      <mat-form-field
+                        appearance="outline"
+                        class="w-[95%] xs:w-full component--mat-form-field__custom-input component--mat-country_input__custom-style normal-text-heading gt-sm:w-[100%]"
+                      >
+                        <input
+                          matInput
+                          placeholder="Type Here...."
+                          (input)="onGetValue($event)"
+                          (click)="isrowselectedfirstreply(row)"
+                          (ngModelChange)="type1($event)"
+                          (keyup.enter)="replay('')"
+                        />
+
+                        <!-- <button mat-icon-button [disabled]="disableglobal_reply" ></button> -->
+                        <mat-icon
+                          matSuffix
+                          style="cursor: pointer"
+                          (click)="replay('')"
+                          >reply</mat-icon
+                        >
+                        <!-- </button> -->
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <!--date-->
+                  <div class="mt-[3px] float-right">
+                    <div>
+                      <span class="secondary-heading whitespace-nowrap"
+                        >{{
+                          element.comment_datetime | date : "dd MMM y"
+                        }},</span
+                      >
+                    </div>
+                    <div>
+                      <span class="secondary-heading whitespace-nowrap">{{
+                        element.comment_datetime | date : "h:mm a"
+                      }}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!--second person reply-->
+                <div
+                  *ngIf="element.category_aut != null"
+                  class="w-full flex gap-2 mt-[-2px] ml-[7px]"
+                >
+                  <!--Icons-->
+
+                  <div class="mt-[4px] gap-4 ml-[20px]">
+                    <div>
+                      <mat-icon
+                        class="red-heading-text icon-display"
+                        style="cursor: pointer"
+                        (click)="isrowselecteddelete(row)"
+                        (click)="deletecomments()"
+                        >delete</mat-icon
+                      >
+                    </div>
+                    <div class="mt-[-6px]">
+                      <mat-icon
+                        class="h-[10px] icon-display"
+                        style="cursor: pointer"
+                        (click)="isrowselected(row)"
+                        (click)="editField(element)"
+                        >edit</mat-icon
+                      >
+                    </div>
+
+                    <span *ngIf="!isEditMode">{{ value }}</span>
+                  </div>
+
+                  <!--Content-->
+                  <div class="w-[415px]">
+                    <div style="display: flex; gap: 24px">
+                      <div style="display: flex" class="space-x-2">
+                        <div
+                          class="flex space-x-2 whitespace-nowrap lt-sm:pr-3 mt-[-4px]"
+                        >
+                          <div class="flex gap-1 text-sm mt-1">
+                            <span
+                              a
+                              routerLink="/example"
+                              style="text-decoration: underline"
+                              class="primary-heading"
+                              (click)="isrowse(row)"
+                              (click)="openUserProfile()"
+                            >
+                              {{ element.category_aut.first_name }}</span
+                            >
+                            <span
+                              a
+                              routerLink="/example"
+                              style="text-decoration: underline"
+                              class="primary-heading"
+                              (click)="isrowse(row)"
+                              (click)="openUserProfile()"
+                            >
+                              {{ element.category_aut.last_name }}</span
+                            >
+                            <span class="secondary-heading">
+                              - {{ element.category_aut.category_aut }}</span
+                            >
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- {{element | json}} -->
+                    <form [formGroup]="firstFormGroup">
+                      <mat-form-field
+                        *ngIf="
+                          comment_id_get_id == element.comment_id &&
+                          replycomment == element.reply_from_comment_text
+                        "
+                        class="w-[90%]"
+                        appearance="outline"
+                        class="w-[100%] xs:w-full component--mat-form-field__custom-input component--mat-country_input__custom-style normal-text-heading gt-sm:w-[100%]"
+                      >
+                        <input
+                          matInput
+                          placeholder="Type Here...."
+                          (input)="onGetValue($event)"
+                          formControlName="edit"
+                          [ngModel]="name"
+                          (keyup.enter)="updatecomments('')"
+                        />
+                        <!-- {{ element.reply_from_comment_text }} -->
+                        <mat-icon
+                          matSuffix
+                          style="cursor: pointer"
+                          (click)="updatecomments('')"
+                          >reply</mat-icon
+                        >
+                      </mat-form-field>
+                    </form>
+
+                    <div
+                      *ngIf="replycomment != element.reply_from_comment_text"
+                      class="ml-[52px] mb-[5px] mt-[-26px] text-justify"
+                    >
+                      <span class="normal-heading">{{
+                        element.reply_from_comment_text
+                      }}</span>
+                    </div>
+                  </div>
+
+                  <!--DAte time-->
+                  <div class="mt-1 flex flex-col">
+                    <div>
+                      <span class="secondary-heading whitespace-nowrap"
+                        >{{
+                          element.reply_from_datetime | date : "dd MMM y"
+                        }},</span
+                      >
+                    </div>
+                    <div>
+                      <span class="secondary-heading whitespace-nowrap">{{
+                        element.reply_from_datetime | date : "h:mm a"
+                      }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </td>
+          </ng-container>
+
+          <tr
+            mat-header-row
+            *matHeaderRowDef="displayedColumns; sticky: true"
+            style="text-align: center"
+          ></tr>
+          <tr
+            mat-row
+            *matRowDef="let row; columns: displayedColumns"
+            (mouseover)="row.hovered = true"
+            (mouseout)="row.hovered = false"
+          ></tr>
+
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="2">No data matching the filter</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

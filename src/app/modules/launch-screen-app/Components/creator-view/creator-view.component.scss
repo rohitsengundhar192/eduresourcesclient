@@ -1,0 +1,45 @@
+
+hr {
+  position: relative;
+  // top: 20px;
+  border: none;
+  height: 3px;
+  background-color: gray;
+  margin-bottom: 50px;
+}
+.bor{
+  border-color: rgb(228 228 231);
+  border-style: solid;
+}
+
+.d{
+  // float:left;
+width:480px;
+overflow-y: auto;
+// height: 100px;
+}
+.a{
+  // float:left;
+width:550px;
+overflow-y: auto;
+// height: 100px;
+}
+
+
+.example-full-width {
+  width: 100%;
+}
+
+// .mat-card:not([class*=mat-elevation-z]) {
+//   box-shadow: 0 0px 0px -1px rgba(0,0,0,1),
+//               0 0px 0px 0 rgba(0,0,0,1),
+//               0 0px 2px 0 rgba(0,0,0,1);
+// }
+.bord{
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border: 1px solid #9894948a;
+}
+.horizontal-line {
+  border-top: 3px solid black; /* Adjust the color and thickness as desired */
+  margin: 10px 0; /* Optional: Add some space above and below the line */
+}

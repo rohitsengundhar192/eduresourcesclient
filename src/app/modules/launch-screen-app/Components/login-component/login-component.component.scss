@@ -1,0 +1,27 @@
+@import "global";
+@import "variables";
+.content {
+  text-align: center;
+  .line1 {
+    @include heading($secondary-color, $medium-font-weight, 14);
+  }
+  .line2 {
+    @include heading($primary-color, $medium-font-weight, 14);
+  }
+  .line3 {
+    @include heading($secondary-color, $medium-font-weight, 14);
+  }
+}
+
+
+mat-form-field{
+  @apply w-full gt-xs:w-[35%]
+}
+
+.left{
+  @apply w-full
+}
+
+.right{
+  @apply w-full
+}

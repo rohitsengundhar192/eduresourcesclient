@@ -1,0 +1,201 @@
+<div class="w-full">
+  <div class="p-2">
+    <!--desctiption-->
+    <div class="flex gap-2 items-center xs:justify-between">
+
+      <!--Text-->
+      <div>
+        <!--First line-->
+        <div>
+          <label class="secondary-heading"
+            >WOW Resource ID:
+            <span class="primary-heading ml-[21px]">{{
+              wow_assesment_idd
+            }}</span>
+          </label>
+        </div>
+        <!--second line-->
+
+        <div>
+          <label class="secondary-heading"
+            >WOW Resource Name:
+            <span class="red-heading">{{ wow_assesment_name }}</span>
+          </label>
+        </div>
+      </div>
+    </div>
+    <!--Input type-->
+
+    <form [formGroup]="firstFormGroup" class="w-full flex justify-center">
+      <mat-form-field
+        appearance="outline"
+        class="w-full xs:w-full component--mat-form-field__custom-input component--mat-country_input__custom-style normal-text-heading"
+      >
+        <input
+          matInput
+          placeholder="Type Here...."
+          formControlName="firstCtrl"
+          id="name"
+          [(ngModel)]="inputValue"
+          (ngModelChange)="type($event)"
+          (keyup.enter)="addyourglobalcomments()"
+        />
+      </mat-form-field>
+    </form>
+
+    <!--Button-->
+    <div class="flex gap-2 items-center xs:flex-col mt-[6px]">
+      <!--Btn-->
+      <div>
+        <button
+          class="primary-button"
+          mat-raised-button
+          (click)="addyourglobalcomments()"
+          [disabled]="disableglobal"
+        >
+          Add Your Private Comment
+        </button>
+      </div>
+
+      <!--Btn Text-->
+      <div>
+        <span class="red-heading"> * </span>
+        <span class="secondary-heading-small">
+          Private Comments can be made global only by the Creator / Collaborator of this WOW Resource.
+        </span>
+      </div>
+    </div>
+
+    <!--Single line-->
+    <div>
+      <span class="normal-heading">Global Comments from Users:</span>
+    </div>
+
+    <!--Mat-card-->
+    <div class="w-full mt-2">
+      <mat-card
+        class="xs:w-[98%] w-[99%] mb-2 bord"
+        style="padding: 0; padding-top: 4px; padding-left: 4px"
+        *ngFor="let item of cardDetails"
+      >
+        <div class="w-full flex gap-2 justify-between">
+          <!-- image -->
+          <div class="w-auto">
+            <img
+              [src]="
+                getCustomerProfileUrl(
+                  item.user_details
+                    .previous_login_image_of_the_day_ceph_object_id
+                )
+              "
+              (click)="user_profile1(item)"
+              (click)="openUserProfile1()"
+              class="h-10 w-10 shadow-2xl rounded-lg"
+              style="cursor: pointer; box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.25);"
+            />
+          </div>
+          <!-- center text -->
+          <div class="w-[524px] h-auto text-justify xs:w-[193px]">
+            <div class="flex gap-2 xs:flex-col xs:gap-0">
+              <div>
+                <span class="primary-heading whitespace-nowrap"
+                  >{{ item.user_details.comment_from_user_name }} -</span
+                >
+              </div>
+              <div class="text-start">
+                <span
+                  class="secondary-heading whitespace-nowrap xs:whitespace-normal"
+                >
+                  {{ item.user_details.comment_from_user_category_name }}</span
+                >
+              </div>
+            </div>
+            <p
+              class="normal-heading xs:w-[266px]"
+              style="word-wrap: break-word; margin-top: 3.2px"
+            >
+              {{ item.user_details.comment_text }}
+            </p>
+          </div>
+          <!-- date -->
+          <div class="mr-[9px]">
+            <div>
+              <span class="secondary-heading whitespace-nowrap"
+                >{{
+                  item.user_details.comment_datetime | convertFrom24To12Format
+                }},</span
+              >
+            </div>
+            <div>
+              <span class="secondary-heading whitespace-nowrap">{{
+                item.user_details.comment_datetime | converttime
+              }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!--second reply-->
+        <div
+          *ngIf="item.reply != null"
+          class="w-[92.5%] flex ml-[50px] mt-[-7px] justify-between xs:ml-[9px] xs:w-[100%]"
+        >
+          <div class="w-full flex gap-[10px] xs:gap-[4px] xs:justify-evenly">
+            <!--reply image-->
+            <div>
+              <img
+                [src]="getCustomerProfileUrl(item.reply.customer_image)"
+                class="h-10 w-10 shadow-2xl rounded-lg"
+                (click)="user_profile(item)"
+                (click)="openUserProfile()"
+                style="cursor: pointer; box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.25);"
+              />
+            </div>
+            <!--reply text-->
+            <div class="w-[471px] h-auto text-justify xs:w-[171px]">
+              <div class="flex gap-2 xs:flex-col xs:gap-0">
+                <div>
+                  <span
+                    class="primary-heading whitespace-nowrap xs:whitespace-normal"
+                    >{{ item.reply?.first_name }}
+                    {{ item.reply?.last_name }} -</span
+                  >
+                </div>
+                <div class="text-start">
+                  <span
+                    class="secondary-heading whitespace-nowrap xs:whitespace-normal"
+                    style="word-wrap: break-word"
+                    >{{ item.reply?.category_aut }}</span
+                  >
+                </div>
+              </div>
+              <p
+                class="normal-heading xs:w-[248px]"
+                style="word-wrap: break-word; margin-top: 3.2px"
+              >
+                {{ item.user_details?.reply_from_comment_text }}
+              </p>
+            </div>
+            <!--date-->
+            <div class="mr-[9px]">
+              <div>
+                <span class="secondary-heading whitespace-nowrap"
+                  >{{
+                    item.user_details.reply_from_datetime
+                      | convertFrom24To12Format
+                  }},</span
+                >
+              </div>
+              <div>
+                <span class="secondary-heading whitespace-nowrap">{{
+                  item.user_details.reply_from_datetime | converttime
+                }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+
+
+  </div>
+</div>
